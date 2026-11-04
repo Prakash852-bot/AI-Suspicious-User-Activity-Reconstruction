@@ -1,0 +1,6 @@
+Flask
+pandas
+requests
+chromadb
+sentence-transformers
+reportlab

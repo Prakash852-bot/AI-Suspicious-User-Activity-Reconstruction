@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>AI Digital Forensics Dashboard</h1>
+        <p>Suspicious User Activity Reconstruction</p>
+    </header>
+
+    <div class="dashboard-cards">
+
+        <div class="stat-card">
+            <h3>Total Events</h3>
+            <h2>{{ total_events }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Suspicious Findings</h3>
+            <h2>{{ total_findings }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Investigation Status</h3>
+            <h2>{{ status }}</h2>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <div class="card">
+    <h2>AI-Powered Investigation Analysis</h2>
+    <div class="ai-explanation">
+        {{ ai_explanation }}
+    </div>
+</div>
+        <h2>Activity Timeline</h2>
+        {{ timeline | safe }}
+    </div>
+
+    <div class="card">
+        <h2>Suspicious Activity Findings</h2>
+        {{ findings | safe }}
+    </div>
+
+    <div class="card">
+        <h2>Forensic Investigation Report</h2>
+        <p>Your PDF report is ready.</p>
+        <a href="/download-report">
+            <button>Download PDF Report</button>
+        </a>
+    </div>
+
+    <a href="/">Back to Home</a>
+
+</div>
+
+</body>
+</html>

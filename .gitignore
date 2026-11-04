@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+.env
+
+input_logs/*.csv
+database/*.db
+database/chroma_db/
+output/*.pdf
+output/*

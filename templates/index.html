@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Digital Forensics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>AI-Based Suspicious User Activity Reconstruction</h1>
+            <p>Digital Forensics Investigation Dashboard</p>
+        </header>
+
+        <div class="card">
+            <h2>Upload Investigation Logs</h2>
+
+            <form action="/analyze" method="POST" enctype="multipart/form-data">
+
+                <div class="file-group">
+                    <label>Login Logs (CSV)</label>
+                    <input type="file" name="login_logs" accept=".csv" required>
+                </div>
+
+                <div class="file-group">
+                    <label>File Activity Logs (CSV)</label>
+                    <input type="file" name="file_activity" accept=".csv" required>
+                </div>
+
+                <div class="file-group">
+                    <label>USB Logs (CSV)</label>
+                    <input type="file" name="usb_logs" accept=".csv" required>
+                </div>
+
+                <button type="submit">Analyze Activities</button>
+
+            </form>
+        </div>
+
+        <footer>
+            <p>AI + RAG Powered Digital Forensics System</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

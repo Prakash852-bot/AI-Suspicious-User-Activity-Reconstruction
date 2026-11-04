@@ -1,0 +1,44 @@
+DIGITAL FORENSICS
+
+Digital forensics is the process of collecting,
+preserving, examining, and analyzing digital evidence.
+
+LOG ANALYSIS
+
+Log analysis is the process of examining system
+records to identify unusual or suspicious activities.
+
+LOGIN ANALYSIS
+
+Login logs contain information about user login
+success and login failure events.
+
+FILE ACTIVITY ANALYSIS
+
+File activity logs record when users access,
+modify, or interact with files.
+
+USB ACTIVITY ANALYSIS
+
+USB logs record when external storage devices
+are connected to a computer.
+
+TIMELINE RECONSTRUCTION
+
+Timeline reconstruction arranges digital events
+in chronological order using timestamps.
+
+ACTIVITY CORRELATION
+
+Activity correlation connects related events
+using user identity, timestamps, and event types.
+
+EVIDENCE INTEGRITY
+
+SHA-256 hashing helps verify whether evidence
+files have changed after their hashes were recorded.
+
+IMPORTANT NOTE
+
+A suspicious activity pattern is an investigation
+lead. It does not independently prove wrongdoing.

@@ -1,11 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forensic Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
 <div class="container">
@@ -15,6 +19,7 @@
         <p>Suspicious User Activity Reconstruction</p>
     </header>
 
+    <!-- Dashboard Statistics -->
     <div class="dashboard-cards">
 
         <div class="stat-card">
@@ -34,25 +39,64 @@
 
     </div>
 
-    <div class="card">
-        <div class="card">
-    <h2>AI-Powered Investigation Analysis</h2>
-    <div class="ai-explanation">
-        {{ ai_explanation }}
+    <!-- AI Investigation Analysis -->
+    <div class="card ai-analysis">
+
+        <h2>AI-Powered Investigation Analysis</h2>
+
+        <div class="analysis-content">
+
+            {% set headings = [
+                'RECORDED FACTS',
+                'TIMELINE ANALYSIS',
+                'INVESTIGATION OBSERVATIONS',
+                'LIMITATIONS',
+                'CONCLUSION',
+                'KNOWLEDGE BASE'
+            ] %}
+
+            {% for line in ai_explanation.split('\n') %}
+
+                {% set line = line.strip() %}
+
+                {% if line in headings %}
+
+                    <h3>{{ line }}</h3>
+
+                {% elif line.startswith('- ') %}
+
+                    <p class="analysis-point">
+                        <span>•</span> {{ line[2:] }}
+                    </p>
+
+                {% elif line %}
+
+                    <p>{{ line }}</p>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
     </div>
-</div>
+
+    <!-- Activity Timeline -->
+    <div class="card">
         <h2>Activity Timeline</h2>
         {{ timeline | safe }}
     </div>
 
+    <!-- Suspicious Findings -->
     <div class="card">
         <h2>Suspicious Activity Findings</h2>
         {{ findings | safe }}
     </div>
 
+    <!-- PDF Report -->
     <div class="card">
         <h2>Forensic Investigation Report</h2>
         <p>Your PDF report is ready.</p>
+
         <a href="/download-report">
             <button>Download PDF Report</button>
         </a>

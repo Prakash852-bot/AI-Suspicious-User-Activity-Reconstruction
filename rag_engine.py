@@ -1,32 +1,18 @@
-import chromadb
-from sentence_transformers import SentenceTransformer
+
+import re
 from pathlib import Path
 
 # Project paths
 BASE_DIR = Path(__file__).parent
 KNOWLEDGE_FILE = BASE_DIR / "knowledge_base" / "digital_forensics_basics.txt"
-DB_PATH = BASE_DIR / "database" / "chroma_db"
 
-# Lazy load embedding model
-model = None
-
-def get_embedding_model():
-    global model
-
-    if model is None:
-        print("Loading embedding model...")
-        model = SentenceTransformer("all-MiniLM-L6-v2")
-
-    return model
-# Create ChromaDB storage
-client = chromadb.PersistentClient(path=str(DB_PATH))
-
-collection = client.get_or_create_collection(
-    name="digital_forensics_knowledge"
-)
+# Store knowledge paragraphs in memory
+knowledge_chunks = []
 
 
 def load_knowledge():
+
+    global knowledge_chunks
 
     if not KNOWLEDGE_FILE.exists():
         raise FileNotFoundError(
@@ -35,43 +21,69 @@ def load_knowledge():
 
     text = KNOWLEDGE_FILE.read_text(encoding="utf-8")
 
-    # Split text into paragraphs
-    chunks = [
+    knowledge_chunks = [
         paragraph.strip()
         for paragraph in text.split("\n\n")
         if paragraph.strip()
     ]
 
-    if not chunks:
+    if not knowledge_chunks:
         raise ValueError("Knowledge-base file is empty.")
 
-    embeddings = model.encode(chunks).tolist()
+    print(f"Loaded {len(knowledge_chunks)} knowledge sections.")
 
-    ids = [f"forensic_doc_{i}" for i in range(len(chunks))]
+    return knowledge_chunks
 
-    collection.upsert(
-        ids=ids,
-        documents=chunks,
-        embeddings=embeddings
+
+def tokenize(text):
+
+    return set(
+        re.findall(r"\b[a-zA-Z0-9]+\b", text.lower())
     )
-
-    print(f"Stored {len(chunks)} knowledge sections.")
 
 
 def retrieve_context(query, top_k=3):
 
-    embedding_model = get_embedding_model()
+    global knowledge_chunks
 
-    query_embedding = embedding_model.encode([query]).tolist()
+    if not knowledge_chunks:
+        load_knowledge()
 
-    results = collection.query(
-        query_embeddings=query_embedding,
-        n_results=min(top_k, collection.count())
+    query_words = tokenize(query)
+
+    if not query_words:
+        return "\n\n".join(knowledge_chunks[:top_k])
+
+    scored_chunks = []
+
+    for paragraph in knowledge_chunks:
+
+        paragraph_words = tokenize(paragraph)
+
+        # Count matching keywords
+        score = len(query_words.intersection(paragraph_words))
+
+        if query.lower() in paragraph.lower():
+            score += 5
+
+        if score > 0:
+            scored_chunks.append((score, paragraph))
+
+    # Sort by relevance
+    scored_chunks.sort(
+        key=lambda item: item[0],
+        reverse=True
     )
 
-    documents = results.get("documents", [[]])[0]
+    results = [
+        paragraph
+        for score, paragraph in scored_chunks[:top_k]
+    ]
 
-    return "\n\n".join(documents)
+    if not results:
+        return "\n\n".join(knowledge_chunks[:top_k])
+
+    return "\n\n".join(results)
 
 
 if __name__ == "__main__":

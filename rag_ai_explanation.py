@@ -1,5 +1,4 @@
-import json
-import requests
+
 from rag_engine import retrieve_context
 
 
@@ -9,86 +8,78 @@ def generate_rag_explanation(activity_details):
         "digital forensics suspicious login sensitive file USB activity"
     )
 
-    url = "http://localhost:11434/api/generate"
+    # Convert investigation records into readable text
+    if isinstance(activity_details, dict):
+        records = activity_details
+    else:
+        records = {"Investigation Records": str(activity_details)}
 
-    activity_text = json.dumps(activity_details, indent=2, default=str)
+    recorded_events = []
 
-    prompt = f"""
-You are a digital forensics assistant.
+    def extract_events(data):
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if isinstance(value, (dict, list)):
+                    extract_events(value)
+                else:
+                    recorded_events.append(f"{key}: {value}")
 
-Analyze ONLY the events provided below.
+        elif isinstance(data, list):
+            for item in data:
+                extract_events(item)
 
-Knowledge:
-{context}
+    extract_events(records)
 
-Actual Investigation Records:
-{activity_text}
+    facts = "\n".join(
+        f"- {event}" for event in recorded_events
+    ) if recorded_events else "Not available in the records."
 
-IMPORTANT RULES:
-- Never invent events, users, files, timestamps, or actions.
-- Mention each recorded event only once.
-- Use exact timestamps from the records.
-- Clearly distinguish recorded facts from observations.
-- Do not calculate or invent time windows.
-- Use only the timestamps and time differences shown in the records.
-- USB connection does not prove file copying.
-- Do not assume anyone is guilty.
-- If information is missing, say "Not available in the records".
-- Do not repeat sentences.
-
-Write a short explanation using these headings:
-
+    # Lightweight investigation explanation
+    explanation = f"""
 RECORDED FACTS
+
+The investigation contains the following recorded information:
+{facts}
+
 TIMELINE ANALYSIS
+
+The events are presented using the timestamps available in the investigation records.
+No missing timestamps or event sequences have been assumed.
+
 INVESTIGATION OBSERVATIONS
+
+The records should be reviewed for unusual login activity, sensitive file access,
+and USB device connections. These events may require further investigation.
+
 LIMITATIONS
+
+A USB connection alone does not prove that files were copied.
+The available records cannot independently establish a person's intention or guilt.
+
 CONCLUSION
 
-Use simple English. Keep each heading to 1 or 2 short sentences.
+The investigation results provide information for further forensic review.
+All findings should be verified against the original evidence records.
+
+KNOWLEDGE BASE
+
+{context}
 """
 
-    data = {
-        "model": "llama3.2:1b",
-        "prompt": prompt,
-        "stream": False,
-        "options": {
-    "num_predict": 350,
-    "temperature": 0.1,
-    "num_ctx": 2048,
-    "repeat_penalty": 1.2
-    }
-    }
-
-    try:
-        response = requests.post(
-            url,
-            json=data,
-            timeout=300
-        )
-
-        response.raise_for_status()
-        result = response.json()["response"]
-
-        result = result.replace("\\*", "")
-        result = result.replace("*", "")
-
-        return result
-
-    except requests.RequestException as error:
-        return f"AI connection error: {error}"
+    return explanation.strip()
 
 
 if __name__ == "__main__":
 
-    sample_activity = """
-    User demo logged in successfully.
-    The same user accessed a sensitive file.
-    A USB device was connected within 30 minutes.
-    """
+    sample_activity = {
+        "user": "demo",
+        "event": "login_success",
+        "timestamp": "09:02"
+    }
 
-    print("Generating RAG-based AI explanation...")
+    print("Generating forensic explanation...")
 
     result = generate_rag_explanation(sample_activity)
 
-    print("\nAI + RAG FORENSIC EXPLANATION\n")
+    print("\nFORENSIC EXPLANATION\n")
     print(result)

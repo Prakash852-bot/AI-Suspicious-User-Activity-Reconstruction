@@ -1,39 +1,163 @@
 
-.ai-analysis {
-    margin-top: 30px;
-    padding: 25px;
-    background: #ffffff;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+header {
+    text-align: center;
+    padding: 35px 15px;
+    background: #1e293b;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #38bdf8;
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+header p {
+    color: #cbd5e1;
+}
+
+.card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid #334155;
+}
+
+.card h2 {
+    color: #38bdf8;
+    margin-bottom: 20px;
+}
+
+.file-group {
+    margin-bottom: 20px;
+}
+
+.file-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    background: #0f172a;
+    color: white;
+    border: 1px solid #475569;
+    border-radius: 6px;
+}
+
+button {
+    background: #0284c7;
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0369a1;
+}
+
+footer {
+    text-align: center;
+    color: #94a3b8;
+    padding: 25px;
+}
+/* Dashboard Summary Cards */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #1e40af, #0284c7);
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h3 {
+    color: #e0f2fe;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.stat-card h2 {
+    color: white;
+    font-size: 30px;
+}
+
+/* Result Tables */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #0f172a;
+}
+
+.data-table th {
+    background: #0284c7;
+    color: white;
+    padding: 14px;
     text-align: left;
 }
 
-.ai-analysis h2 {
-    font-size: 24px;
-    color: #172554;
-    margin-bottom: 25px;
-    border-bottom: 2px solid #2563eb;
-    padding-bottom: 12px;
+.data-table td {
+    padding: 12px;
+    border-bottom: 1px solid #334155;
 }
 
-.analysis-content h3 {
-    font-size: 18px;
-    color: #1d4ed8;
-    margin-top: 24px;
-    margin-bottom: 10px;
+.data-table tr:hover {
+    background: #334155;
 }
 
-.analysis-content p {
-    font-size: 15px;
-    line-height: 1.8;
-    color: #334155;
-    margin-bottom: 12px;
-    text-align: justify;
-    overflow-wrap: anywhere;
+/* Responsive Dashboard */
+@media (max-width: 700px) {
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .data-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
 }
-<section class="ai-analysis">
-    <h2>AI-Powered Investigation Analysis</h2>
-    <div class="analysis-content">
-        <!-- AI explanation content -->
-    </div>
-</section>
+/* Fix table overflow outside dashboard cards */
+.card {
+    overflow-x: auto;
+}
+
+.data-table {
+    max-width: 100%;
+    border-collapse: collapse;
+}

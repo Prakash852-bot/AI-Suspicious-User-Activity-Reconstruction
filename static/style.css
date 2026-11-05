@@ -198,3 +198,31 @@ footer {
     margin: 7px 0;
     overflow-wrap: anywhere;
 }
+
+.analysis-content {
+    margin-top: 20px;
+}
+
+.analysis-content h3 {
+    font-size: 18px;
+    color: #1d4ed8;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dbeafe;
+}
+
+.analysis-content p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #334155;
+    margin-bottom: 12px;
+    overflow-wrap: anywhere;
+}
+
+.analysis-content .analysis-point {
+    padding: 8px 12px;
+    margin: 8px 0;
+    background: #f8fafc;
+    border-radius: 6px;
+}
